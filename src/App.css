@@ -1,0 +1,63 @@
+body {
+  margin: 0;
+  font-family: Arial;
+  background: #0f172a;
+  color: white;
+}
+
+.app {
+  text-align: center;
+  padding: 40px;
+}
+
+.hero h1 {
+  color: #ff4d4d;
+  font-size: 42px;
+}
+
+.hero p {
+  color: #94a3b8;
+}
+
+.searchBox {
+  margin-top: 20px;
+}
+
+input {
+  padding: 12px;
+  width: 250px;
+  border-radius: 8px;
+  border: none;
+}
+
+button {
+  padding: 12px 15px;
+  margin-left: 10px;
+  background: #ff4d4d;
+  border: none;
+  border-radius: 8px;
+  color: white;
+  cursor: pointer;
+}
+
+.results {
+  margin-top: 40px;
+}
+
+.card {
+  background: #1e293b;
+  margin: 15px auto;
+  padding: 20px;
+  width: 60%;
+  border-radius: 12px;
+  text-align: left;
+  transition: 0.3s;
+}
+
+.card:hover {
+  transform: scale(1.02);
+}
+
+input:focus {
+  outline: 2px solid #1a0aa5;
+}
