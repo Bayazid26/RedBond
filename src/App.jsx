@@ -9,25 +9,32 @@ export default function App() {
   const [loading, setLoading] = useState(false);
   const [searched, setSearched] = useState(false);
 
-  const search = async () => {
-    const query = blood.trim().toUpperCase().replace(/\s/g, "");
-    if (!query) return;
+const search = async () => {
+  const query = blood.trim().toUpperCase().replace(/\s/g, "");
+  if (!query) return;
 
-    setLoading(true);
-    setSearched(true);
+  setLoading(true);
+  setSearched(true);
 
-    try {
-      const res = await fetch(`${API_URL}?bloodGroup=${query}`);
-      const json = await res.json();
+  try {
+    const res = await fetch(`${API_URL}?bloodGroup=${query}`);
+    const json = await res.json();
 
-      setDonors(json.data || []);
-    } catch (err) {
-      console.log("API error", err);
+    console.log("API RESPONSE:", json); // 🔥 DEBUG
+
+    if (json.status === "success" && Array.isArray(json.data)) {
+      setDonors(json.data);
+    } else {
       setDonors([]);
     }
 
-    setLoading(false);
-  };
+  } catch (err) {
+    console.log("API error", err);
+    setDonors([]);
+  }
+
+  setLoading(false);
+};
 
   return (
     <div className="app">
