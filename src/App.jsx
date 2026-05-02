@@ -1,7 +1,7 @@
 import { useState } from "react";
 import "./App.css";
 
-const API_URL = import.meta.env.VITE_API_URL;
+const API_URL = "https://sheetdb.io/api/v1/gpnilm0xtb1dp";
 
 export default function App() {
   const [blood, setBlood] = useState("");
@@ -9,32 +9,35 @@ export default function App() {
   const [loading, setLoading] = useState(false);
   const [searched, setSearched] = useState(false);
 
-const search = async () => {
-  const query = blood.trim().toUpperCase().replace(/\s/g, "");
-  if (!query) return;
+  const search = async () => {
+    const query = blood.trim().toUpperCase().replace(/\s/g, "");
+    if (!query) return;
 
-  setLoading(true);
-  setSearched(true);
+    setLoading(true);
+    setSearched(true);
 
-  try {
-    const res = await fetch(`${API_URL}?bloodGroup=${query}`);
-    const json = await res.json();
+    try {
+      const res = await fetch(API_URL);
+      const data = await res.json();
 
-    console.log("API RESPONSE:", json); // 🔥 DEBUG
+      console.log("FULL DATA:", data);
 
-    if (json.status === "success" && Array.isArray(json.data)) {
-      setDonors(json.data);
-    } else {
+      const filtered = data.filter((d) => {
+        const bg = (d["Blood Group"] || "")
+          .toUpperCase()
+          .replace(/\s/g, "");
+        return bg === query;
+      });
+
+      setDonors(filtered);
+
+    } catch (err) {
+      console.log("Error:", err);
       setDonors([]);
     }
 
-  } catch (err) {
-    console.log("API error", err);
-    setDonors([]);
-  }
-
-  setLoading(false);
-};
+    setLoading(false);
+  };
 
   return (
     <div className="app">
@@ -65,16 +68,16 @@ const search = async () => {
         {!loading && donors.length > 0 && (
           donors.map((d, i) => (
             <div className="card" key={i}>
-              <h2>{d.name}</h2>
-              <p>🆔 {d.id}</p>
-              <p>🎓 {d.department}</p>
-              <p>🩸 {d.blood}</p>
-              <p>📞 {d.phone}</p>
-              <p>📍 {d.address}</p>
-              <p>📧 {d.email}</p>
-              <p>🗓 {d.lastDonation}</p>
-              <p>🚨 {d.emergency}</p>
-              <p>🏫 {d.university}</p>
+              <h2>{d["Full Name"]}</h2>
+              <p>🆔 {d["Student ID"]}</p>
+              <p>🎓 {d["Department"]}</p>
+              <p>🩸 {d["Blood Group"]}</p>
+              <p>📞 {d["Phone Number"]}</p>
+              <p>📍 {d["present address"]}</p>
+              <p>📧 {d["Email ID"]}</p>
+              <p>🗓 {d["Last Blood Donation Date"]}</p>
+              <p>🚨 {d["Emergency Donation Availability"]}</p>
+              <p>🏫 {d["University Name"]}</p>
             </div>
           ))
         )}
