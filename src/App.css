@@ -1,116 +1,1107 @@
-/* 🔥 GLOBAL */
-body {
+/* ─── Reset & Base ─────────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
   margin: 0;
-  font-family: 'Segoe UI', system-ui, sans-serif;
-  background: linear-gradient(135deg, #0f172a, #020617);
-  color: white;
+  padding: 0;
 }
 
-/* 🔥 APP CONTAINER */
-.app {
-  text-align: center;
-  padding: 40px 20px;
+:root {
+  --red-500: #ef4444;
+  --red-600: #dc2626;
+  --red-700: #b91c1c;
+  --red-900: #7f1d1d;
+  --red-950: #450a0a;
+  --red-alpha-10: rgba(220, 38, 38, 0.10);
+  --red-alpha-15: rgba(220, 38, 38, 0.15);
+  --red-alpha-20: rgba(220, 38, 38, 0.20);
+  --red-alpha-30: rgba(220, 38, 38, 0.30);
+  --red-alpha-40: rgba(220, 38, 38, 0.40);
+
+  --white-05: rgba(255, 255, 255, 0.05);
+  --white-08: rgba(255, 255, 255, 0.08);
+  --white-10: rgba(255, 255, 255, 0.10);
+  --white-12: rgba(255, 255, 255, 0.12);
+  --white-20: rgba(255, 255, 255, 0.20);
+  --white-30: rgba(255, 255, 255, 0.30);
+  --white-40: rgba(255, 255, 255, 0.40);
+  --white-50: rgba(255, 255, 255, 0.50);
+  --white-60: rgba(255, 255, 255, 0.60);
+  --white-70: rgba(255, 255, 255, 0.70);
+  --white-80: rgba(255, 255, 255, 0.80);
+
+  --bg: #060609;
+  --surface: rgba(255, 255, 255, 0.035);
+  --surface-hover: rgba(255, 255, 255, 0.055);
+  --border: rgba(255, 255, 255, 0.08);
+  --border-hover: rgba(255, 255, 255, 0.14);
+
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 20px;
+  --radius-full: 9999px;
+
+  --font: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  --transition: 0.18s ease;
 }
 
-/* 🔥 HERO */
-.hero h1 {
-  color: #ff4d4d;
-  font-size: 52px;
-  margin-bottom: 10px;
-  letter-spacing: 1px;
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: #fff;
+  font-family: var(--font);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  min-height: 100vh;
+  line-height: 1.5;
 }
 
-.hero p {
-  color: #94a3b8;
-  font-size: 18px;
+a { text-decoration: none; color: inherit; }
+button { font-family: inherit; cursor: pointer; }
+input, select { font-family: inherit; }
+
+/* ─── Animations ───────────────────────────────────────────── */
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: 0.35; transform: scale(0.8); }
 }
 
-/* 🔥 SEARCH BOX */
-.searchBox {
-  margin-top: 25px;
+@keyframes spin {
+  to { transform: rotate(360deg); }
 }
 
-input {
-  padding: 14px;
-  width: 260px;
-  border-radius: 10px;
-  border: none;
-  outline: none;
-  font-size: 15px;
-  transition: 0.3s;
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
-input:focus {
-  box-shadow: 0 0 0 2px #ff4d4d;
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
 }
 
-/* 🔥 BUTTON */
-button {
-  padding: 14px 18px;
-  margin-left: 10px;
-  background: linear-gradient(135deg, #ff4d4d, #ff1a1a);
-  border: none;
-  border-radius: 10px;
-  color: white;
+@keyframes glowPulse {
+  0%, 100% { opacity: 0.6; }
+  50%       { opacity: 1; }
+}
+
+/* ─── Layout ───────────────────────────────────────────────── */
+.rb-root {
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* Atmospheric background */
+.rb-bg-glow {
+  position: fixed;
+  top: -120px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 800px;
+  height: 500px;
+  background: radial-gradient(ellipse at center, rgba(185, 28, 28, 0.12) 0%, transparent 65%);
+  pointer-events: none;
+  z-index: 0;
+  animation: glowPulse 6s ease-in-out infinite;
+}
+
+.rb-bg-grid {
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.018) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.018) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none;
+  z-index: 0;
+  mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, black 20%, transparent 100%);
+}
+
+.rb-layout {
+  position: relative;
+  z-index: 1;
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 0 20px 48px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ─── Loading Screen ───────────────────────────────────────── */
+.rb-loading-screen {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  background: var(--bg);
+  color: var(--white-30);
+  font-size: 14px;
+  letter-spacing: 0.5px;
+}
+
+/* ─── Navbar ───────────────────────────────────────────────── */
+.rb-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  margin: 20px 0 32px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 0.5px solid var(--border);
+  border-radius: var(--radius-lg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.rb-nav-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
   cursor: pointer;
+}
+
+.rb-logo {
+  width: 32px;
+  height: 32px;
+  border-radius: 9px;
+  background: linear-gradient(135deg, var(--red-700), var(--red-900));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  flex-shrink: 0;
+  box-shadow: 0 0 16px rgba(185, 28, 28, 0.4);
+}
+
+.rb-brand-name {
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -0.2px;
+}
+
+.rb-live-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--red-500);
+  animation: pulse 2.5s ease-in-out infinite;
+}
+
+.rb-nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.rb-user-chip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 12px 4px 4px;
+  border-radius: var(--radius-full);
+  border: 0.5px solid var(--border);
+  background: var(--surface);
+  cursor: pointer;
+  transition: background var(--transition), border-color var(--transition);
+}
+
+.rb-user-chip:hover {
+  background: var(--surface-hover);
+  border-color: var(--border-hover);
+}
+
+.rb-user-avatar,
+.rb-user-avatar-fallback {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.rb-user-avatar-fallback {
+  background: var(--red-alpha-20);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 600;
+  color: #fca5a5;
+  border: 1px solid var(--red-alpha-30);
+}
+
+.rb-user-name {
+  font-size: 13px;
+  color: var(--white-70);
+}
+
+/* ─── Buttons ──────────────────────────────────────────────── */
+.rb-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 9px 16px;
+  border-radius: var(--radius-sm);
+  font-size: 13px;
   font-weight: 500;
-  transition: 0.3s;
+  border: none;
+  transition: opacity var(--transition), background var(--transition), transform 0.1s;
+  white-space: nowrap;
+  user-select: none;
 }
 
-button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 20px rgba(255, 77, 77, 0.3);
+.rb-btn:active:not(:disabled) { transform: scale(0.97); }
+.rb-btn:hover:not(:disabled) { opacity: 0.88; }
+.rb-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+.rb-btn--primary {
+  background: linear-gradient(135deg, var(--red-700), var(--red-600));
+  color: #fff;
+  box-shadow: 0 0 20px rgba(185, 28, 28, 0.3);
 }
 
-/* 🔥 RESULTS */
-.results {
-  margin-top: 50px;
+.rb-btn--primary:hover:not(:disabled) {
+  box-shadow: 0 0 28px rgba(185, 28, 28, 0.45);
+  opacity: 1;
+  background: linear-gradient(135deg, var(--red-600), var(--red-500));
 }
 
-/* 🔥 CARD DESIGN (GLASS EFFECT) */
-.card {
-  background: rgba(30, 41, 59, 0.7);
-  margin: 20px auto;
-  padding: 22px;
-  width: 60%;
-  border-radius: 16px;
-  text-align: left;
-
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-
-  transition: 0.3s ease;
+.rb-btn--secondary {
+  background: var(--surface);
+  color: var(--white-80);
+  border: 0.5px solid var(--border);
 }
 
-/* 🔥 HOVER EFFECT */
-.card:hover {
-  transform: translateY(-5px) scale(1.02);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+.rb-btn--secondary:hover:not(:disabled) {
+  background: var(--surface-hover);
+  border-color: var(--border-hover);
+  opacity: 1;
 }
 
-/* 🔥 CARD TEXT */
-.card h2 {
-  margin-bottom: 10px;
+.rb-btn--ghost {
+  background: transparent;
+  color: var(--white-50);
+  border: 0.5px solid var(--border);
+}
+
+.rb-btn--ghost:hover:not(:disabled) {
+  background: var(--white-05);
+  color: var(--white-70);
+  opacity: 1;
+}
+
+.rb-btn--danger {
+  background: var(--red-alpha-10);
+  color: #fca5a5;
+  border: 0.5px solid var(--red-alpha-30);
+}
+
+.rb-btn--danger:hover:not(:disabled) {
+  background: var(--red-alpha-15);
+  opacity: 1;
+}
+
+.rb-btn--full { width: 100%; }
+
+.rb-btn--lg {
+  padding: 13px 20px;
+  font-size: 14px;
+  border-radius: var(--radius-md);
+}
+
+.rb-btn--search {
+  padding: 11px 20px;
+  border-radius: var(--radius-md);
+  flex-shrink: 0;
+}
+
+/* ─── Back Button ──────────────────────────────────────────── */
+.rb-back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: none;
+  border: none;
+  color: var(--white-40);
+  font-size: 13px;
+  padding: 0 0 20px;
+  transition: color var(--transition);
+}
+
+.rb-back-btn:hover {
+  color: var(--white-70);
+}
+
+/* ─── Alert ────────────────────────────────────────────────── */
+.rb-alert {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  border-radius: var(--radius-md);
+  font-size: 13px;
+  margin-bottom: 16px;
+  animation: fadeIn 0.2s ease;
+}
+
+.rb-alert--success {
+  background: rgba(34, 197, 94, 0.08);
+  border: 0.5px solid rgba(34, 197, 94, 0.25);
+  color: #86efac;
+}
+
+.rb-alert--error {
+  background: rgba(239, 68, 68, 0.08);
+  border: 0.5px solid rgba(239, 68, 68, 0.25);
+  color: #fca5a5;
+}
+
+.rb-alert-icon {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.rb-alert--success .rb-alert-icon {
+  background: rgba(34, 197, 94, 0.15);
+  color: #4ade80;
+}
+
+.rb-alert--error .rb-alert-icon {
+  background: rgba(239, 68, 68, 0.15);
   color: #f87171;
 }
 
-.card p {
-  margin: 6px 0;
-  color: #cbd5f5;
+/* ─── Spinner ──────────────────────────────────────────────── */
+.rb-spinner {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+  flex-shrink: 0;
+}
+
+.rb-spinner--lg {
+  width: 22px;
+  height: 22px;
+  border-width: 2.5px;
+}
+
+/* ─── Pages ────────────────────────────────────────────────── */
+.rb-main { flex: 1; }
+
+.rb-page { animation: fadeUp 0.22s ease; }
+
+.rb-page--center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+}
+
+.rb-page-header { margin-bottom: 24px; }
+
+.rb-page-title {
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: -0.3px;
+  margin-bottom: 6px;
+}
+
+.rb-page-sub {
+  font-size: 14px;
+  color: var(--white-40);
+}
+
+/* ─── Hero ─────────────────────────────────────────────────── */
+.rb-hero {
+  text-align: center;
+  padding: 16px 0 32px;
+}
+
+.rb-hero-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1.4px;
+  color: var(--white-40);
+  margin-bottom: 20px;
+}
+
+.rb-pulse-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--red-500);
+  animation: pulse 2.5s ease-in-out infinite;
+}
+
+.rb-hero-title {
+  font-size: 36px;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.8px;
+  margin-bottom: 12px;
+}
+
+.rb-hero-title em {
+  font-style: normal;
+  color: var(--red-500);
+}
+
+.rb-hero-sub {
+  font-size: 14px;
+  color: var(--white-40);
+}
+
+/* ─── Search Block ─────────────────────────────────────────── */
+.rb-search-block { margin-bottom: 28px; }
+
+.rb-search-row {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.rb-input-wrap {
+  position: relative;
+  flex: 1;
+}
+
+.rb-input-wrap--search .rb-search-icon {
+  position: absolute;
+  left: 13px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--white-30);
+  pointer-events: none;
+}
+
+.rb-input {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.055);
+  border: 0.5px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 12px 14px;
+  color: #fff;
+  font-size: 14px;
+  outline: none;
+  transition: border-color var(--transition), background var(--transition);
+}
+
+.rb-input--search { padding-left: 40px; }
+
+.rb-input::placeholder { color: var(--white-25, rgba(255,255,255,0.25)); }
+
+.rb-input:focus {
+  border-color: rgba(239, 68, 68, 0.4);
+  background: rgba(255, 255, 255, 0.07);
+}
+
+.rb-select {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.055);
+  border: 0.5px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 12px 14px;
+  color: #fff;
+  font-size: 14px;
+  outline: none;
+  transition: border-color var(--transition);
+  appearance: none;
+  cursor: pointer;
+}
+
+.rb-select:focus { border-color: rgba(239, 68, 68, 0.4); }
+
+.rb-select option { background: #1a1a2e; color: #fff; }
+
+/* Blood group quick picks */
+.rb-blood-chips {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.rb-blood-chip {
+  padding: 5px 13px;
+  border-radius: var(--radius-full);
+  background: var(--surface);
+  border: 0.5px solid var(--border);
+  color: var(--white-50);
+  font-size: 12px;
+  font-weight: 500;
+  transition: all var(--transition);
+}
+
+.rb-blood-chip:hover {
+  background: var(--surface-hover);
+  color: var(--white-80);
+  border-color: var(--border-hover);
+}
+
+.rb-blood-chip--active {
+  background: var(--red-alpha-20);
+  border-color: var(--red-alpha-40);
+  color: #fca5a5;
+}
+
+/* ─── Results ──────────────────────────────────────────────── */
+.rb-results { margin-top: 4px; }
+
+.rb-results-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 14px;
+}
+
+.rb-results-count {
+  font-size: 12px;
+  color: var(--white-40);
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+}
+
+/* ─── State / Empty ────────────────────────────────────────── */
+.rb-state-msg {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  padding: 48px 0;
+  color: var(--white-40);
   font-size: 14px;
 }
 
-/* 🔥 RESPONSIVE */
-@media (max-width: 768px) {
-  .card {
-    width: 90%;
-  }
+.rb-empty {
+  text-align: center;
+  padding: 48px 24px;
+}
 
-  input {
-    width: 200px;
-  }
+.rb-empty-icon { font-size: 36px; margin-bottom: 14px; }
 
-  .hero h1 {
-    font-size: 36px;
-  }
+.rb-empty-title {
+  font-size: 16px;
+  font-weight: 500;
+  margin-bottom: 6px;
+}
+
+.rb-empty-sub {
+  font-size: 13px;
+  color: var(--white-40);
+}
+
+/* ─── Donor Card ───────────────────────────────────────────── */
+.rb-donor-card {
+  background: var(--surface);
+  border: 0.5px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 18px 20px;
+  margin-bottom: 12px;
+  transition: border-color var(--transition), background var(--transition);
+  animation: fadeUp 0.22s ease both;
+}
+
+.rb-donor-card:hover {
+  background: var(--surface-hover);
+  border-color: var(--border-hover);
+}
+
+.rb-donor-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.rb-donor-avatar {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--red-alpha-20), var(--red-alpha-10));
+  border: 0.5px solid var(--red-alpha-30);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 600;
+  color: #fca5a5;
+  flex-shrink: 0;
+}
+
+.rb-donor-identity {
+  flex: 1;
+  min-width: 0;
+}
+
+.rb-donor-name {
+  display: block;
+  font-size: 15px;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.rb-donor-dept {
+  font-size: 12px;
+  color: var(--white-40);
+}
+
+.rb-blood-badge {
+  padding: 3px 12px;
+  border-radius: var(--radius-full);
+  background: var(--red-alpha-20);
+  border: 0.5px solid var(--red-alpha-40);
+  color: #fca5a5;
+  font-size: 12px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.rb-blood-badge-lg {
+  padding: 5px 16px;
+  border-radius: var(--radius-full);
+  background: var(--red-alpha-20);
+  border: 0.5px solid var(--red-alpha-40);
+  color: #fca5a5;
+  font-size: 14px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.rb-donor-fields {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px 20px;
+  margin-bottom: 16px;
+}
+
+.rb-donor-field { display: flex; flex-direction: column; gap: 2px; }
+
+.rb-field-label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.9px;
+  color: var(--white-30);
+}
+
+.rb-field-value {
+  font-size: 13px;
+  color: var(--white-80);
+}
+
+.rb-call-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 10px;
+  border-radius: var(--radius-sm);
+  background: var(--white-05);
+  border: 0.5px solid var(--border);
+  color: var(--white-60);
+  font-size: 13px;
+  font-family: inherit;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--transition);
+  text-decoration: none;
+}
+
+.rb-call-btn:hover {
+  background: var(--red-alpha-10);
+  border-color: var(--red-alpha-30);
+  color: #fca5a5;
+}
+
+/* ─── Dashboard ────────────────────────────────────────────── */
+.rb-dashboard { margin-top: 40px; }
+
+.rb-dashboard-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--white-30);
+  margin-bottom: 12px;
+}
+
+.rb-menu-grid { display: flex; flex-direction: column; gap: 8px; }
+
+.rb-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 16px;
+  background: var(--surface);
+  border: 0.5px solid var(--border);
+  border-radius: var(--radius-md);
+  color: #fff;
+  text-align: left;
+  width: 100%;
+  transition: all var(--transition);
+}
+
+.rb-menu-item:hover {
+  background: var(--surface-hover);
+  border-color: var(--border-hover);
+}
+
+.rb-menu-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.rb-menu-icon--red {
+  background: var(--red-alpha-15);
+  color: #fca5a5;
+  border: 0.5px solid var(--red-alpha-30);
+}
+
+.rb-menu-icon--neutral {
+  background: var(--white-05);
+  color: var(--white-60);
+  border: 0.5px solid var(--border);
+}
+
+.rb-menu-text { flex: 1; min-width: 0; }
+
+.rb-menu-title {
+  display: block;
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 2px;
+}
+
+.rb-menu-sub {
+  font-size: 12px;
+  color: var(--white-40);
+}
+
+.rb-menu-arrow { color: var(--white-30); flex-shrink: 0; }
+
+.rb-menu-badge {
+  padding: 3px 10px;
+  border-radius: var(--radius-full);
+  background: rgba(34, 197, 94, 0.12);
+  border: 0.5px solid rgba(34, 197, 94, 0.30);
+  color: #86efac;
+  font-size: 11px;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+/* ─── CTA Banner ───────────────────────────────────────────── */
+.rb-cta-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 32px;
+  padding: 18px 20px;
+  background: linear-gradient(135deg, rgba(127, 29, 29, 0.25), rgba(69, 10, 10, 0.15));
+  border: 0.5px solid rgba(185, 28, 28, 0.25);
+  border-radius: var(--radius-lg);
+}
+
+.rb-cta-title {
+  font-size: 15px;
+  font-weight: 600;
+  margin-bottom: 3px;
+}
+
+.rb-cta-sub {
+  font-size: 12px;
+  color: var(--white-40);
+}
+
+/* ─── Auth Card ────────────────────────────────────────────── */
+.rb-auth-card {
+  background: var(--surface);
+  border: 0.5px solid var(--border);
+  border-radius: 20px;
+  padding: 44px 36px;
+  text-align: center;
+  width: 100%;
+  max-width: 380px;
+  animation: fadeUp 0.25s ease;
+}
+
+.rb-auth-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, var(--red-700), var(--red-900));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px;
+  color: #fff;
+  box-shadow: 0 0 30px rgba(185, 28, 28, 0.4);
+}
+
+.rb-auth-title {
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.3px;
+  margin-bottom: 10px;
+}
+
+.rb-auth-sub {
+  font-size: 14px;
+  color: var(--white-40);
+  line-height: 1.6;
+}
+
+.rb-auth-divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 24px 0 16px;
+  color: var(--white-30);
+  font-size: 12px;
+}
+
+.rb-auth-divider::before,
+.rb-auth-divider::after {
+  content: "";
+  flex: 1;
+  height: 0.5px;
+  background: var(--border);
+}
+
+.rb-google-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  padding: 12px 20px;
+  background: #fff;
+  border: none;
+  border-radius: var(--radius-md);
+  color: #111;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity var(--transition), box-shadow var(--transition);
+  box-shadow: 0 2px 12px rgba(0,0,0,0.3);
+}
+
+.rb-google-btn:hover { opacity: 0.93; box-shadow: 0 4px 20px rgba(0,0,0,0.4); }
+
+.rb-auth-footnote {
+  font-size: 11px;
+  color: var(--white-25, rgba(255,255,255,0.25));
+  margin-top: 18px;
+  line-height: 1.5;
+}
+
+/* ─── Form Card ────────────────────────────────────────────── */
+.rb-form-card {
+  background: var(--surface);
+  border: 0.5px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.rb-form-section { padding: 8px 0; display: flex; flex-direction: column; gap: 14px; }
+
+.rb-section-label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--white-30);
+  margin-bottom: -4px;
+}
+
+.rb-form-divider {
+  height: 0.5px;
+  background: var(--border);
+  margin: 16px 0;
+}
+
+.rb-form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.rb-form-field { display: flex; flex-direction: column; gap: 7px; }
+
+.rb-form-label {
+  font-size: 11px;
+  color: var(--white-40);
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.rb-required { color: var(--red-500); }
+
+/* ─── Profile Card ─────────────────────────────────────────── */
+.rb-profile-card {
+  background: var(--surface);
+  border: 0.5px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  animation: fadeUp 0.22s ease;
+}
+
+.rb-profile-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 20px 22px;
+  background: linear-gradient(135deg, rgba(127, 29, 29, 0.18), transparent);
+  border-bottom: 0.5px solid var(--border);
+}
+
+.rb-profile-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(239, 68, 68, 0.35);
+  overflow: hidden;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  font-weight: 700;
+  background: var(--red-alpha-15);
+  color: #fca5a5;
+}
+
+.rb-profile-avatar img { width: 100%; height: 100%; object-fit: cover; }
+
+.rb-profile-identity { flex: 1; min-width: 0; }
+
+.rb-profile-name {
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: -0.2px;
+}
+
+.rb-profile-email {
+  font-size: 12px;
+  color: var(--white-40);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.rb-profile-fields {
+  padding: 6px 0;
+}
+
+.rb-profile-field {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 13px 22px;
+  border-bottom: 0.5px solid var(--border);
+  transition: background var(--transition);
+}
+
+.rb-profile-field:last-child { border-bottom: none; }
+.rb-profile-field:hover { background: var(--white-05); }
+
+.rb-profile-field-icon {
+  font-size: 15px;
+  width: 20px;
+  text-align: center;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.rb-profile-field .rb-field-label { margin-bottom: 2px; display: block; }
+.rb-profile-field .rb-field-value { display: block; }
+
+.rb-profile-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  padding: 16px 22px;
+  border-top: 0.5px solid var(--border);
+}
+
+/* Empty profile state */
+.rb-empty-profile {
+  text-align: center;
+  padding: 56px 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.rb-empty-profile .rb-empty-icon { font-size: 40px; margin-bottom: 8px; }
+.rb-empty-profile .rb-empty-title { font-size: 18px; font-weight: 600; }
+.rb-empty-profile .rb-empty-sub { font-size: 14px; color: var(--white-40); margin-bottom: 20px; }
+
+/* ─── Footer ───────────────────────────────────────────────── */
+.rb-footer {
+  text-align: center;
+  padding: 28px 0 8px;
+  font-size: 11px;
+  color: var(--white-20);
+  letter-spacing: 0.5px;
+}
+
+/* ─── Scrollbar ────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--white-10); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--white-20); }
+
+/* ─── Mobile ───────────────────────────────────────────────── */
+@media (max-width: 480px) {
+  .rb-layout { padding: 0 14px 40px; }
+
+  .rb-nav { margin: 14px 0 24px; padding: 10px 14px; }
+
+  .rb-hero-title { font-size: 28px; }
+
+  .rb-form-row { grid-template-columns: 1fr; }
+
+  .rb-profile-actions { grid-template-columns: 1fr; }
+
+  .rb-cta-banner { flex-direction: column; align-items: flex-start; }
+
+  .rb-donor-fields { grid-template-columns: 1fr; }
+
+  .rb-search-row { flex-direction: column; }
+
+  .rb-auth-card { padding: 32px 22px; }
+
+  .rb-user-name { display: none; }
 }
