@@ -7,18 +7,19 @@ import {
 } from "firebase/auth";
 
 // ─── CONFIG ──────────────────────────────────────────────────
-const FIREBASE_CONFIG = {
-  apiKey: "AIzaSyDf4drFmDJSbl2jTsHIOO5FVibht_80lKE",
-  authDomain: "redbond-865fc.firebaseapp.com",
-  projectId: "redbond-865fc",
-  storageBucket: "redbond-865fc.firebasestorage.app",
-  messagingSenderId: "23303869934",
-  appId: "1:23303869934:web:cacfeec1b1e9e28b3c2aff",
+const firebaseConfig = {
+  apiKey: "AIzaSyBPwC97dLxm5EtacOuDtLXb4QWJrWNLHWc",
+  authDomain: "redbond-49a20.firebaseapp.com",
+  projectId: "redbond-49a20",
+  storageBucket: "redbond-49a20.firebasestorage.app",
+  messagingSenderId: "104664264414",
+  appId: "1:104664264414:web:e58a4c51a467d6831a5c4f",
+  measurementId: "G-DRDJZTKPLY"
 };
 const SHEETDB_API = "https://sheetdb.io/api/v1/gpnilm0xtb1dp";
 const GOOGLE_FORM_URL = "https://forms.gle/ikrADWcgPzSmgze69";
 
-const firebaseApp = initializeApp(FIREBASE_CONFIG);
+const firebaseApp = initializeApp(firebaseConfig);
 const auth = getAuth(firebaseApp);
 const provider = new GoogleAuthProvider();
 
